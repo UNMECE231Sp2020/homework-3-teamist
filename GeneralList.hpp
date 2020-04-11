@@ -37,8 +37,21 @@ class List {
 		~List() {
 			while(!empty()) {
 			//while(_size > 0) {
-				rm_frontnode();
+				pop_back();
 			}
+		}
+		List &operator=(const List &Dlist) {
+			_size = Dlist._size;
+			Dlist *Itter;
+			front=Itter;
+			Itter=Dlist.front;
+			while(Itter!=nullptr) {	
+				Itter=Itter->next;
+				push_back(Itter->value);			
+			}
+
+			back = Itter;
+			return *this;
 		}
 
 		Data &front() const {
@@ -57,7 +70,7 @@ class List {
 			return _size;
 		}
 
-		void add_frontnode(Data data) {
+		void push_front(Data data) {
 			Dlist *newNode = new Dlist;
 			newNode->value = data;
 			newNode->prev = nullptr;
@@ -75,7 +88,7 @@ class List {
 			_size++;
 		}
 
-		void add_backnode(Data data) {
+		void push_back(Data data) {
 			Dlist *newNode = new Dlist;
 			newNode->value = data;
 			newNode->next=nullptr;
@@ -94,7 +107,7 @@ class List {
 			_size+=1;
 		}
 
-		void rm_frontnode() {
+		void pop_front() {
 			Dlist *front_to_delete = _front;
 			_front = _front->next;
 
@@ -110,20 +123,15 @@ class List {
 		}
 
 		//CONVERT THIS FUNCTION
-		void rm_backnode() {
-			Llist *back_to_remove = _back;
-
-			if(_front->next!=nullptr) {
-				Llist *new_back = _front;
-				while(new_back->next!=_back) {
-					new_back=new_back->next;
-				}
-				new_back->next=nullptr;
-				_back=new_back;
+		void pop_back() {
+			Dlist *back_to_remove = _back;
+			_back = _back->prev;
+			if(_back==nullptr) {
+				_front = nullptr;
 			}
+			
 			else {
-				_front=nullptr;
-				_back=nullptr;
+				_back->next = nullptr;
 			}
 
 			delete back_to_remove;
@@ -137,10 +145,27 @@ class List {
 
 		//Modify this
 		void print() {
-			Llist *temp;
-			for(temp=_front; temp!=nullptr; temp=temp->next) {
-				std::cout << temp->value << " ";
+			Dlist *Itter;
+			for(Itter=_front; Itter!=nullptr; Itter=Itter->Itter) {
+				std::cout << Itter->value << " ";
 			}
 			std::cout << std::endl;
 		}
+		void print_back() {
+			Dlist *Itter;
+			for(Itter=_back; Itter!=nullptr; Itter=Itter->prev) {
+				std::cout << Itter->value << " ";
+			}
+			std::cout << std::endl;
+
+		}
+
+		template<typename F> friend bool operator==(const List<F> &G, const List<F> &J);
+		template<typename F> friend bool operator!=(const List<F> &G, const List <F> &J); 
 };
+template<typename F> bool operator==(const List<F> &G, const List<F> &J) {
+	auto *i = G._front;
+	auto *k = J._front;
+	for(auto *i = G._front, auto *k = J._front;)
+		
+
