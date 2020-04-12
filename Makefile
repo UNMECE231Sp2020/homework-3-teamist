@@ -4,4 +4,3 @@ all:
         
 clean:
         rm run_tests
-        rm *.o
